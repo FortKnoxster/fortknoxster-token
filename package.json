@@ -1,0 +1,30 @@
+{
+  "name": "zeppelin-solidity",
+  "version": "1.0.0",
+  "description": "Contains FortKnoxsters' token related Ethereum smart contracts.",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "FortKnoxster",
+  "homepage": "https://github.com/FortKnoxster/fortknoxster-token",
+  "keywords": [
+    "solidity",
+    "token",
+    "fortknoxster",
+    "ethereum",
+    "smart",
+    "contracts",
+    "security",
+    "zeppelin"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FortKnoxster/fortknoxster-token"
+  },
+  "dependencies": {
+    "zeppelin-solidity": "^1.3.0"
+  },
+  "devDependencies": {}
+}
