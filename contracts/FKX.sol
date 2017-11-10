@@ -6,9 +6,9 @@ import "zeppelin-solidity/contracts/token/BurnableToken.sol";
 
 
 /**
- * @title FortKnoxsterToken
+ * @title FKX
  */
-contract FortKnoxsterToken is MintableToken, BurnableToken {
+contract FKX is MintableToken, BurnableToken {
 
   string public constant name = "Knoxstercoin";
   string public constant symbol = "FKX";
@@ -19,7 +19,7 @@ contract FortKnoxsterToken is MintableToken, BurnableToken {
   /**
    * @dev Constructor that gives msg.sender all of existing tokens.
    */
-  function FortKnoxsterToken() {
+  function FKX() public {
     totalSupply = INITIAL_SUPPLY;
     balances[msg.sender] = INITIAL_SUPPLY;
   }
