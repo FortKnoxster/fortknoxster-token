@@ -1,4 +1,4 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.13;
 
 
 import "zeppelin-solidity/contracts/token/MintableToken.sol";
@@ -13,6 +13,7 @@ contract FKX is MintableToken, BurnableToken {
   string public constant name = "Knoxstercoin";
   string public constant symbol = "FKX";
   uint8 public constant decimals = 18;
+  string public constant version = "1.0";
 
   uint256 public constant INITIAL_SUPPLY = 10 * (10 ** uint256(decimals)); // 10 Ether
 
