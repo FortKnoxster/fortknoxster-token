@@ -25,6 +25,9 @@
     "url": "git+https://github.com/FortKnoxster/fortknoxster-token"
   },
   "dependencies": {
+    "oracles-combine-solidity": "github:oraclesorg/oracles-combine-solidity",
+    "truffle-contract": "^3.0.1",
+    "web3": "^1.0.0-beta.26",
     "zeppelin-solidity": "^1.3.0"
   },
   "devDependencies": {

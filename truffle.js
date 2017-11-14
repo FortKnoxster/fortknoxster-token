@@ -10,7 +10,7 @@ module.exports = {
       port: 8545,//8545,
       network_id: "3", // Match ropsten
       //from: "",    // Use the address we derived
-      //gas: 1000000
+      gas: 6000000
     }
   }
 };
