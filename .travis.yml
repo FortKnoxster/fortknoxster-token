@@ -10,7 +10,7 @@ install:
   - npm install -g ethereumjs-testrpc
   - npm install
 script:
-  #- npm test
+  - npm test
 before_script:
   - testrpc > /dev/null &
   - sleep 5
