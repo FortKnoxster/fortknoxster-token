@@ -16,12 +16,4 @@ contract FKX is BurnableToken, PausableToken, MintableToken {
   uint8 public constant decimals = 18;
   string public constant version = "1.0";
 
-  /**
-  * @dev Override MintableToken.finishMinting() to add canMint modifier
-  */
-  function finishMinting() onlyOwner canMint public returns(bool) {
-      return super.finishMinting();
-  }
-
-
 }

@@ -140,7 +140,7 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
 
   /**
    * @dev Overrided buyTokens method of parent Crowdsale contract  to provide bonus by changing and restoring rate variable
-   * @param beneficiary walelt of investor to receive tokens
+   * @param beneficiary wallet of investor to receive tokens
    */
   function buyTokens(address beneficiary) public payable {
     // Apply bonus by adjusting and restoring rate member
