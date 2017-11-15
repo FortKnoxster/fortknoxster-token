@@ -131,12 +131,12 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
     require(_preRate > 0x0);
     require(now <= startTime); // Cannot be called during the crowdsale period  
     preRate =  _preRate;
-    PreRateChange(_preRate);
+    //PreRateChange(_preRate);
   }
 
   event RateChange(uint256 rate);
-  event PreRateChange(uint256 preRate);
-  event LogMsg(string msg);
+  //event PreRateChange(uint256 preRate);
+  //event LogMsg(string msg);
 
   /**
    * @dev Overrided buyTokens method of parent Crowdsale contract  to provide bonus by changing and restoring rate variable
@@ -171,7 +171,6 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
   * @param tokens amount of tokens to be received by beneficiary
   */
   function mintTokens(address beneficiary, uint256 tokens) public onlyOwner {
-    LogMsg("mintTokens Before");
     require(beneficiary != 0x0);
     require(tokens > 0);
     require(now <= endTime);                               // Crowdsale (without startTime check)
@@ -179,7 +178,6 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
     require(token.totalSupply().add(tokens) <= tokenCap); // TokensCappedCrowdsale
     
     token.mint(beneficiary, tokens);
-    LogMsg("mintTokens After");
   }
 
 

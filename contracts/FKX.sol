@@ -1,6 +1,10 @@
 pragma solidity ^0.4.11;
 
-
+import "zeppelin-solidity/contracts/token/ERC20Basic.sol";
+import "zeppelin-solidity/contracts/token/BasicToken.sol";
+import "zeppelin-solidity/contracts/token/ERC20.sol";
+import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
+import "zeppelin-solidity/contracts/token/StandardToken.sol";
 import "zeppelin-solidity/contracts/token/MintableToken.sol";
 import "zeppelin-solidity/contracts/token/BurnableToken.sol";
 import "zeppelin-solidity/contracts/token/PausableToken.sol";
