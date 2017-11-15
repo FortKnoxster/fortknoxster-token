@@ -23,26 +23,5 @@ contract FKX is BurnableToken, PausableToken, MintableToken {
       return super.finishMinting();
   }
 
-  /**
-   * @dev Burns a specific amount of tokens.
-   * @param _value The amount of token to be burned.
-   */
-  function burn(uint256 _value) public {
-      super.burn(_value);
-  }
-
-    /**
-   * @dev called by the owner to pause, triggers stopped state
-   */
-  function pause() onlyOwner whenNotPaused public {
-    super.pause();
-  }
-
-  /**
-   * @dev called by the owner to unpause, returns to normal state
-   */
-  function unpause() onlyOwner whenPaused public {
-    super.unpause();
-  }
 
 }

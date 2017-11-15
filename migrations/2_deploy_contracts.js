@@ -26,42 +26,30 @@
 var FKXCrowdsale = artifacts.require("./FKXCrowdsale.sol");
 
 module.exports = function (deployer, network, accounts) {
-
-    // Dev parameters
-//  const startTime = web3.eth.getBlock('latest').timestamp + 60; //
-//  const endTime = startTime + 172800;  // 
-//  const rate = 1575; // rate based on 1 ETH = 300 USD
-//  const preRate = 1890; // rate based on 1 ETH = 300 USD
-//  const goal = 0; // In wei 0
-//  const wallet = web3.eth.accounts[0]; // the address that will hold the fund. Recommended to use a multisig one for security.
-//  const preSaleWallet = '';
-
-// new web3.BigNumber(300)
-    // Live parameters
-
+    var startTime, endTime, rate, preRate, multiSigWallet, preSaleWallet, communityWallet, partnersWallet, companyWallet, foundersWallet;
     if (network === 'development') {
-        const startTime = 1511521200; // 24 Nov 2017 12:00 CET
-        const endTime = 1513940400;  // 22 Dec 2017 12:00 CET
-        const rate = 1575; // rate based on 1 ETH = 300 USD
-        const preRate = 1890; // rate based on 1 ETH = 300 USD
-        const multiSigWallet = "0x261c64c4ff01d9b0808c9d9100348e5bed15897f"; // the address that will hold the fund. Recommended to use a multisig one for security.
-        const preSaleWallet = "0x1a50b27a196d8e3ac9785eb64a998a0e3dab3811";
-        const communityWallet = "0x51244e34b38f60163098d925f1625b656f5f1342";
-        const partnersWallet = "0x51a5997561d054cb7e67c9607f0c78126b8028a8";
-        const companyWallet = "0x64e72aea9e8b34ff1a34dc821b8ab0aeb68fc014";
-        const foundersWallet = "0xcc2c7abad207b81f79684d00b08b94d5756c8573";
+        startTime = 1511521200; // 24 Nov 2017 12:00 CET
+        endTime = 1513940400;  // 22 Dec 2017 12:00 CET
+        rate = 1575; // rate based on 1 ETH = 300 USD
+        preRate = 1890; // rate based on 1 ETH = 300 USD
+        multiSigWallet = "0x261c64c4ff01d9b0808c9d9100348e5bed15897f"; // the address that will hold the fund. Recommended to use a multisig one for security.
+        preSaleWallet = "0x1a50b27a196d8e3ac9785eb64a998a0e3dab3811";
+        communityWallet = "0x51244e34b38f60163098d925f1625b656f5f1342";
+        partnersWallet = "0x51a5997561d054cb7e67c9607f0c78126b8028a8";
+        companyWallet = "0x64e72aea9e8b34ff1a34dc821b8ab0aeb68fc014";
+        foundersWallet = "0xcc2c7abad207b81f79684d00b08b94d5756c8573";
     } 
     else if (network === 'ropsten') {
-        const startTime = web3.eth.getBlock('latest').timestamp + 60; // 60 seconds after latest block
-        const endTime = startTime + 7200;  // 2 hours after start
-        const rate = 1575 * 1000; // rate based on 1 ETH = 300 USD
-        const preRate = 1890 * 1000; // rate based on 1 ETH = 300 USD
-        const multiSigWallet = web3.eth.accounts[0]; // the address that will hold the fund. Recommended to use a multisig one for security.
-        const preSaleWallet = web3.eth.accounts[1];
-        const communityWallet = web3.eth.accounts[2];
-        const partnersWallet = web3.eth.accounts[3];
-        const companyWallet = web3.eth.accounts[4];
-        const foundersWallet = web3.eth.accounts[5];
+        startTime = new Date().getTime() / 1000 + 60;//web3.eth.getBlock('latest').timestamp + 60; // 60 seconds after latest block
+        endTime = startTime + 7200;  // 2 hours after start
+        rate = 1575 * 1000; // rate based on 1 ETH = 300 USD
+        preRate = 1890 * 1000; // rate based on 1 ETH = 300 USD
+        multiSigWallet = web3.eth.accounts[0]; // the address that will hold the fund. Recommended to use a multisig one for security.
+        preSaleWallet = web3.eth.accounts[1];
+        communityWallet = web3.eth.accounts[2];
+        partnersWallet = web3.eth.accounts[3];
+        companyWallet = web3.eth.accounts[4];
+        foundersWallet = web3.eth.accounts[5];
     }
 
     console.log("Deploying FKX token contracts...");

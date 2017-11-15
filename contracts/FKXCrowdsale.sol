@@ -20,7 +20,7 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
   using SafeMath for uint256;
 
   uint256 public constant DECIMALS      = 18;
-  uint256 public constant TOTAL_SUPPLY  = 135000000 * (10 ** DECIMALS); // 135 Million FKX
+  //uint256 public constant TOTAL_SUPPLY  = 135000000 * (10 ** DECIMALS); // 135 Million FKX
   uint256 public constant TOKEN_CAP     = 80325000  * (10 ** DECIMALS); // 80.325 Million FKX
   uint256 public constant PRE_TOKEN_CAP = 9450000   * (10 ** DECIMALS); // 9.45 Million FKX
 
@@ -75,7 +75,9 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
   }
 
   function createTokenContract() internal returns (MintableToken) {
-    return new FKX();
+    FKX token = new FKX();
+    token.pause();
+    return token;
   }
 
   /**
@@ -87,13 +89,26 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
       // Burn any remaining tokens
       if (token.totalSupply() < tokenCap) {
           uint tokens = tokenCap.sub(token.totalSupply());
-          token.burn(tokens);
+          FKX(token).burn(tokens);
       }
 
       // disable minting of FKX tokens
       token.finishMinting();
   }
 
+  /**
+    * @dev Pause the FKX token.
+    */
+    function pauseTokens() public onlyOwner {
+        FKX(token).pause();
+    }
+
+    /**
+    * @dev Unpause the FKX token.
+    */
+    function unpauseTokens() public onlyOwner {
+        FKX(token).unpause();
+    }
 
   /**
    * @dev This function will be called 4-6 hours before the crowdsale begins.
@@ -137,7 +152,7 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
       // calculate token amount to be created
       uint256 tokens = totalPreSaleTokens.add(weiAmount.mul(rate));
 
-      require(totalPreSaleTokens >= tokens);
+      require(tokens <= PRE_TOKEN_CAP);
       
       super.buyTokens(beneficiary);      
       // Update pre-sale tokens
