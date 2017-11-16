@@ -319,32 +319,6 @@ contract MintableToken is StandardToken, Ownable {
 
 
 
-/**
- * @title Burnable Token
- * @dev Token that can be irreversibly burned (destroyed).
- */
-contract BurnableToken is StandardToken {
-
-    event Burn(address indexed burner, uint256 value);
-
-    /**
-     * @dev Burns a specific amount of tokens.
-     * @param _value The amount of token to be burned.
-     */
-    function burn(uint256 _value) public {
-        require(_value > 0);
-
-        address burner = msg.sender;
-        balances[burner] = balances[burner].sub(_value);
-        totalSupply = totalSupply.sub(_value);
-        Burn(burner, _value);
-    }
-}
-
-
-
-
-
 
 /**
  * @title Pausable token
@@ -380,7 +354,7 @@ contract PausableToken is StandardToken, Pausable {
 /**
  * @title FKX
  */
-contract FKX is BurnableToken, PausableToken, MintableToken {
+contract FKX is PausableToken, MintableToken {
 
   string public constant name = "Knoxstertoken";
   string public constant symbol = "FKX";
@@ -687,10 +661,10 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
       super.finalization();
 
       // Burn any remaining tokens
-      if (token.totalSupply() < tokenCap) {
-          uint tokens = tokenCap.sub(token.totalSupply());
-          FKX(token).burn(tokens);
-      }
+      //if (token.totalSupply() < tokenCap) {
+      //    uint tokens = tokenCap.sub(token.totalSupply());
+      //    FKX(token).burn(tokens);
+      //}
 
       // disable minting of FKX tokens
       token.finishMinting();

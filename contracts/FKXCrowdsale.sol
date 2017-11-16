@@ -86,10 +86,10 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
       super.finalization();
 
       // Burn any remaining tokens
-      if (token.totalSupply() < tokenCap) {
-          uint tokens = tokenCap.sub(token.totalSupply());
-          FKX(token).burn(tokens);
-      }
+      //if (token.totalSupply() < tokenCap) {
+      //    uint tokens = tokenCap.sub(token.totalSupply());
+      //    FKX(token).burn(tokens);
+      //}
 
       // disable minting of FKX tokens
       token.finishMinting();

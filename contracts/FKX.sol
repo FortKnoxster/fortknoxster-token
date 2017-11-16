@@ -6,14 +6,13 @@ import "zeppelin-solidity/contracts/token/ERC20.sol";
 import "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 import "zeppelin-solidity/contracts/token/StandardToken.sol";
 import "zeppelin-solidity/contracts/token/MintableToken.sol";
-import "zeppelin-solidity/contracts/token/BurnableToken.sol";
 import "zeppelin-solidity/contracts/token/PausableToken.sol";
 
 
 /**
  * @title FKX
  */
-contract FKX is BurnableToken, PausableToken, MintableToken {
+contract FKX is PausableToken, MintableToken {
 
   string public constant name = "Knoxstertoken";
   string public constant symbol = "FKX";
