@@ -14,13 +14,13 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  * FinalizableCrowdsale - makes the crowdsale finalizable
  *
  */
-contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
+contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale (FKXCrowdsale.TOKEN_CAP) {
 
   using SafeMath for uint256;
 
   uint256 public constant DECIMALS      = 18;
-  //uint256 public constant TOTAL_SUPPLY  = 135000000 * (10 ** DECIMALS); // 135 Million FKX
-  uint256 public constant TOKEN_CAP     = 80325000  * (10 ** DECIMALS); // 80.325 Million FKX
+  uint256 public constant TOKEN_CAP  = 135000000 * (10 ** DECIMALS); // 135 Million FKX
+  //uint256 public constant TOKEN_CAP     = 80325000  * (10 ** DECIMALS); // 80.325 Million FKX
   uint256 public constant PRE_TOKEN_CAP = 9450000   * (10 ** DECIMALS); // 9.45 Million FKX
 
   // Whitelisted wallet to receive 20% bonus from presale.
@@ -45,8 +45,6 @@ contract FKXCrowdsale is TokenCappedCrowdsale, FinalizableCrowdsale {
       address _foundersWallet
     ) public
     
-    TokenCappedCrowdsale(TOKEN_CAP)
-    FinalizableCrowdsale()
     Crowdsale(_startTime, _endTime, _rate, _multiSigWallet) {
 
     require(_presaleWallet    != 0x0);

@@ -28,8 +28,8 @@ var FKXCrowdsale = artifacts.require("./FKXCrowdsale.sol");
 module.exports = function (deployer, network, accounts) {
     var startTime, endTime, rate, preRate, multiSigWallet, preSaleWallet, communityWallet, partnersWallet, companyWallet, foundersWallet;
     if (network === 'development') {
-        startTime = 1511521200; // 24 Nov 2017 12:00 CET
-        endTime = 1513940400;  // 22 Dec 2017 12:00 CET
+        startTime = new Date().getTime() / 1000 + 240;//web3.eth.getBlock('latest').timestamp + 60; // 60 seconds after latest block
+        endTime = startTime + 7200;  // 2 hours after start
         rate = 1575; // rate based on 1 ETH = 300 USD
         preRate = 1890; // rate based on 1 ETH = 300 USD
         multiSigWallet = "0x261c64c4ff01d9b0808c9d9100348e5bed15897f"; // the address that will hold the fund. Recommended to use a multisig one for security.
@@ -50,6 +50,10 @@ module.exports = function (deployer, network, accounts) {
         partnersWallet = web3.eth.accounts[3];
         companyWallet = web3.eth.accounts[4];
         foundersWallet = web3.eth.accounts[5];
+    }
+    else if (network === ' live') {
+        startTime = 1511521200; // 24 Nov 2017 12:00 CET
+        endTime = 1513940400;  // 22 Dec 2017 12:00 CET
     }
 
     console.log("Deploying FKX token contracts...");
