@@ -1,3 +1,6 @@
+require('babel-register');
+require('babel-polyfill');
+
 module.exports = {
   networks: {
     development: {
@@ -11,6 +14,12 @@ module.exports = {
       network_id: "3", // Match ropsten
       //from: "",    // Use the address we derived
       gas: 4704624
+    }
+  },
+  solc: {
+    optimizer: {
+      enabled: true,
+      runs: 200
     }
   }
 };
