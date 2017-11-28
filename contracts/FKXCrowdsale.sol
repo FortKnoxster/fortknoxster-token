@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 
 import "./FKX.sol";
 import "./TokenCappedCrowdsale.sol";
-import "zeppelin-solidity/contracts/crowdsale/FinalizableCrowdsale.sol";
+import "./FinalizableCrowdsale.sol";
 import "zeppelin-solidity/contracts/token/MintableToken.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
@@ -14,7 +14,7 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  * FinalizableCrowdsale - makes the crowdsale finalizable
  *
  */
-contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale (FKXCrowdsale.TOKEN_CAP) {
+contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale(FKXCrowdsale.TOKEN_CAP) {
 
   using SafeMath for uint256;
 
@@ -32,8 +32,6 @@ contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale (FKXCrowdsal
 
   uint256 public totalPreSaleTokens;
 
-  address public tokenAddress;
-
   function FKXCrowdsale(
       uint256 _startTime, 
       uint256 _endTime, 
@@ -45,42 +43,33 @@ contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale (FKXCrowdsal
       address _partnersWallet,
       address _companyWallet,
       address _foundersWallet,
-      address _tokenAddress
+      FKX _fkxToken
     ) public
     
-    Crowdsale(_startTime, _endTime, _rate, _multiSigWallet) {
+    Crowdsale(_startTime, _endTime, _rate, _multiSigWallet, _fkxToken) {
 
-    require(_presaleWallet    != 0x0);
-    require(_communityWallet  != 0x0);
-    require(_partnersWallet   != 0x0);
-    require(_companyWallet    != 0x0);
-    require(_foundersWallet   != 0x0);
-    require(_tokenAddress   != 0x0);
+    require(_presaleWallet    != address(0));
+    require(_communityWallet  != address(0));
+    require(_partnersWallet   != address(0));
+    require(_companyWallet    != address(0));
+    require(_foundersWallet   != address(0));
 
     setPreRate(_preRate);
     setRate(_rate);
 
     presaleWallet =  _presaleWallet;
 
-    tokenAddress = _tokenAddress;
-
     // Allocate tokens to the Advisors & Partners (12% - 16200000 FKX)
-    mintTokens(_partnersWallet,   16200000 * (10 ** DECIMALS));
+    //mintTokens(_partnersWallet,   16200000 * (10 ** DECIMALS));
 
     // Allocate tokens to the Community (11% - 14850000 FKX)
-    mintTokens(_communityWallet,  14850000 * (10 ** DECIMALS));   
+    //mintTokens(_communityWallet,  14850000 * (10 ** DECIMALS));   
 
     // Allocate tokens to the Company (10% - 13500000 FKX)
-    mintTokens(_companyWallet,    13500000 * (10 ** DECIMALS));
+    //mintTokens(_companyWallet,    13500000 * (10 ** DECIMALS));
 
     // Allocate tokens to the Founders (7.5% - 10125000 FKX)
-    mintTokens(_foundersWallet,   10125000 * (10 ** DECIMALS));
-  }
-
-  function createTokenContract() internal returns (MintableToken) {
-    FKX token = FKX(tokenAddress);
-    token.pause();
-    return token;
+    //mintTokens(_foundersWallet,   10125000 * (10 ** DECIMALS));
   }
 
   /**
@@ -95,14 +84,14 @@ contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale (FKXCrowdsal
     * @dev Pause the FKX token.
     */
     function pauseTokens() public onlyOwner {
-        FKX(token).pause();
+        token.pause();
     }
 
     /**
     * @dev Unpause the FKX token.
     */
     function unpauseTokens() public onlyOwner {
-        FKX(token).unpause();
+        token.unpause();
     }
 
   /**
@@ -135,9 +124,28 @@ contract FKXCrowdsale is FinalizableCrowdsale, TokenCappedCrowdsale (FKXCrowdsal
   //event LogMsg(string msg);
 
   /**
+   * @dev Allows to adjust the crowdsale end time
+   */
+  function setEndTime(uint256 _endTime) external onlyOwner {
+      require(!isFinalized);
+      require(_endTime >= startTime);
+      require(_endTime >= now);
+      endTime = _endTime;
+  }
+
+  /**
+   * @dev Sets the wallet to forward ETH collected funds
+   */
+  function setWallet(address _wallet) external onlyOwner {
+      require(_wallet != 0x0);
+      wallet = _wallet;
+  }
+
+  /**
    * @dev Overrided buyTokens method of parent Crowdsale contract  to provide bonus by changing and restoring rate variable
    * @param beneficiary wallet of investor to receive tokens
    */
+   
   function buyTokens(address beneficiary) public payable {
     // Apply bonus by adjusting and restoring rate member
     uint256 oldRate = rate;

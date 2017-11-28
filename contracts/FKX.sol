@@ -18,7 +18,7 @@ contract FKX is PausableToken, CappedToken(FKX.TOKEN_SUPPLY) {
   uint256 public constant TOKEN_SUPPLY  = 135000000 * (10 ** uint256(decimals)); // 135 Million FKX
 
   function FKX() public {
-   
+    pause(); 
   }
 
 }
