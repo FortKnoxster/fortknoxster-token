@@ -2,7 +2,6 @@ pragma solidity ^0.4.18;
 
 import "./FKX.sol";
 import "./FKXTokenTimeLock.sol";
-//import "zeppelin-solidity/contracts/token/MintableToken.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
@@ -31,17 +30,6 @@ contract FKXSale is Ownable {
 
     tokenLock = new FKXTokenTimeLock(token);
 
-    // Allocate tokens to the Advisors & Partners (12% - 16200000 FKX)
-    //mintTokens(_partnersWallet,   16200000 * (10 ** DECIMALS));
-
-    // Allocate tokens to the Community (11% - 14850000 FKX)
-    //mintTokens(_communityWallet,  14850000 * (10 ** DECIMALS));   
-
-    // Allocate tokens to the Company (10% - 13500000 FKX)
-    //mintTokens(_companyWallet,    13500000 * (10 ** DECIMALS));
-
-    // Allocate tokens to the Founders (7.5% - 10125000 FKX)
-    //mintTokens(_foundersWallet,   10125000 * (10 ** DECIMALS));
   }
 
   /**
