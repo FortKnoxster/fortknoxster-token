@@ -29,12 +29,8 @@ contract FKXTokenTimeLock is Ownable {
   // ERC20 basic token contract being held
   FKX public token;
 
-  // beneficiary of tokens after they are released
-  //address public beneficiary;
+  // All beneficiaries' token time locks
   mapping(address => TokenTimeLockVault) public tokenLocks;
-
-  // timestamp when token release is enabled
-  //uint64 public releaseTime;
 
   function FKXTokenTimeLock(FKX _token) public {
     token = _token;
@@ -49,7 +45,6 @@ contract FKXTokenTimeLock is Ownable {
     lock.releaseTime = _releaseTime;
 
     LockEvent(_beneficiary, _tokens, _releaseTime);
-
   }
 
   /**
@@ -66,10 +61,7 @@ contract FKXTokenTimeLock is Ownable {
 
     UnlockEvent(msg.sender);
 
-    //token.safeTransfer(msg.sender, lock.amount);
-    assert(token.transfer(msg.sender, lock.amount));
-    
-    
+    assert(token.transfer(msg.sender, lock.amount));    
   }
 
   /**
@@ -95,7 +87,5 @@ contract FKXTokenTimeLock is Ownable {
    * @param beneficiary beneficiary to receive tokens once they are unlocked
    */
   event UnlockEvent(address indexed beneficiary);
-
-
   
 }
