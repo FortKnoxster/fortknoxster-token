@@ -1,7 +1,6 @@
 pragma solidity ^0.4.18;
 
 import "./FKX.sol";
-import "zeppelin-solidity/contracts/token/SafeERC20.sol";
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
@@ -11,7 +10,6 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  * OpenZeppenlin TokenTimeLock to allow for one lock to many beneficiaries. 
  */
 contract FKXTokenTimeLock is Ownable {
-  using SafeERC20 for FKX;
 
   /**
    * Encapsulates information abount a beneficiary's token time lock.
@@ -58,21 +56,20 @@ contract FKXTokenTimeLock is Ownable {
    * @notice Transfers tokens held by timelock to beneficiary.
    */
   function release() public {
-    //require(tokenLocks[msg.sender] != 0x0);
     TokenTimeLockVault memory lock = tokenLocks[msg.sender];
 
     require(now >= lock.releaseTime);
 
     require(lock.amount > 0);
 
-    //uint256 amount = token.balanceOf(this);
-    //require(amount > 0);
+    delete tokenLocks[msg.sender];
 
     UnlockEvent(msg.sender);
 
-    token.safeTransfer(msg.sender, lock.amount);
+    //token.safeTransfer(msg.sender, lock.amount);
+    assert(token.transfer(msg.sender, lock.amount));
     
-    delete tokenLocks[msg.sender];
+    
   }
 
   /**
