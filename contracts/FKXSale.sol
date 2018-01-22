@@ -18,8 +18,6 @@ contract FKXSale is Ownable {
 
   uint256 public constant DECIMALS = 18;
 
-  uint256 public constant TOKEN_CAP = 135000000 * (10 ** uint256(DECIMALS)); // 135 Million FKX
-
   FKX public token;
 
   FKXTokenTimeLock public tokenLock;
@@ -67,11 +65,6 @@ contract FKXSale is Ownable {
     require(baseTokens > 0);
     require(bonusTokens > 0);
     require(releaseTime > now);
-    uint256 tokens = baseTokens.add(bonusTokens);
-    uint256 newTokens =  token.totalSupply().add(tokens);                                 
-    require(newTokens <= TOKEN_CAP);
-
-    //uint256 releaseTime = now + timeDays * 1 minutes; // Change minutes to days before live deployment
     
     // Mint base tokens to beneficiary
     token.mint(beneficiary, baseTokens);
