@@ -9,6 +9,7 @@ require('chai')
 
 import latestTime from './helpers/latestTime';
 import {increaseTimeTo, duration} from './helpers/increaseTime';
+//import randomInt from './helpers/random';
 
 const FKX = artifacts.require('FKX');
 const FKXTokenTimeLock = artifacts.require('FKXTokenTimeLock');
@@ -25,16 +26,17 @@ contract('FKXTokenTimeLock', function ([_, owner, beneficiary]) {
         this.timelock = await FKXTokenTimeLock.new(this.token.address);
         console.log("Owner: " + owner);
         console.log("Beneficiary: " + beneficiary);
-        console.log("Amount: " + amount);
         console.log("FKX address: " + this.token.address);
         console.log("FKXTokenTimeLock address: " + this.timelock.address);
     });
 
     beforeEach(async function () {
         this.timeLockBalance = await this.token.balanceOf(this.timelock.address);
-        console.log("FKXTokenTimeLock balance: " + this.timeLockBalance);
+//        console.log("FKXTokenTimeLock balance: " + this.timeLockBalance);
+//        console.log("Latest timestamp: " + latestTime());
         this.releaseTime = latestTime() + duration.years(1);
-//        this.timelock = await FKXTokenTimeLock.new(this.token.address, beneficiary, this.releaseTime);
+//        amount =  randomInt(10000);
+//        console.log("Amount: " + amount);
         await this.token.mint(this.timelock.address, amount, {from: owner});
         await this.timelock.lockTokens(beneficiary, this.releaseTime, amount);
     });
