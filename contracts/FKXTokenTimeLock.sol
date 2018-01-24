@@ -108,6 +108,7 @@ contract FKXTokenTimeLock is Ownable {
     for (uint j = 0; j < lockIndexes.length; j++) {
       if (lockIndexes[j] == beneficiary) {
         delete lockIndexes[j];
+        break;
       }
     }
   }
