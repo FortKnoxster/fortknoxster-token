@@ -11,6 +11,11 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  */
 contract FKXTokenTimeLock is Ownable {
 
+  /*
+   * Array with beneficiary lock indexes. 
+   */
+  address[] public lockIndexes;
+
   /**
    * Encapsulates information abount a beneficiary's token time lock.
    */
@@ -21,15 +26,15 @@ contract FKXTokenTimeLock is Ownable {
       uint256 amount;
 
       /**
-       * Timestamp when token release is enabled
+       * Timestamp when token release is enabled.
        */
       uint256 releaseTime;
   }
 
-  // ERC20 basic token contract being held
+  // ERC20 basic token contract being held.
   FKX public token;
 
-  // All beneficiaries' token time locks
+  // All beneficiaries' token time locks.
   mapping(address => TokenTimeLockVault) public tokenLocks;
 
   function FKXTokenTimeLock(FKX _token) public {
@@ -43,6 +48,7 @@ contract FKXTokenTimeLock is Ownable {
     TokenTimeLockVault storage lock = tokenLocks[_beneficiary];
     lock.amount = _tokens;
     lock.releaseTime = _releaseTime;
+    lockIndexes.push(_beneficiary);
 
     LockEvent(_beneficiary, _tokens, _releaseTime);
   }
@@ -59,18 +65,52 @@ contract FKXTokenTimeLock is Ownable {
 
     delete tokenLocks[msg.sender];
 
+    removeLockIndex(msg.sender);
+
     UnlockEvent(msg.sender);
 
-    assert(token.transfer(msg.sender, lock.amount));    
+    assert(token.transfer(msg.sender, lock.amount));   
   }
 
   /**
    * @notice Transfers tokens held by timelock to all beneficiaries.
    */
-  /*function releaseAll() public onlyOwner {
+  function releaseAll() external onlyOwner returns (bool) {
+    for (uint i = 0; i < lockIndexes.length; i++) {
+      address beneficiary = lockIndexes[i];
+      if (beneficiary == 0) { //Skip any previously removed locks
+        continue;
+      }
+      
+      TokenTimeLockVault memory lock = tokenLocks[beneficiary];
+      
+      if (!(now >= lock.releaseTime && lock.amount > 0)) { // Skip any locks that are not due to be release
+        continue;
+      }
 
+      delete tokenLocks[beneficiary];
 
-  }*/
+      removeLockIndex(beneficiary);
+
+      UnlockEvent(beneficiary);
+
+      assert(token.transfer(beneficiary, lock.amount));
+    }
+    return true;
+  }
+
+  /**
+   * Remove beneficiary form lock index
+   *
+   * @param beneficiary beneficiary to removefrom lock index
+   */
+  function removeLockIndex(address beneficiary) private {
+    for (uint j = 0; j < lockIndexes.length; j++) {
+      if (lockIndexes[j] == beneficiary) {
+        delete lockIndexes[j];
+      }
+    }
+  }
 
   /**
    * Logged when tokens were time locked.
