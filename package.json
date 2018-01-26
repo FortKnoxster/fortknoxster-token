@@ -4,7 +4,7 @@
   "description": "Contains FortKnoxsters' token related Ethereum smart contracts.",
   "main": "index.js",
   "scripts": {
-    "test": "truffle test",
+    "test": "scripts/test.sh",
     "coverage": "./node_modules/.bin/solidity-coverage"
   },
   "author": "FortKnoxster",
@@ -52,6 +52,8 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "solidity-coverage": "^0.2.7"
+    "solidity-coverage": "^0.2.7",
+    "ethereumjs-testrpc": "^6.0.3",
+    "truffle": "^4.0.5"
   }
 }
