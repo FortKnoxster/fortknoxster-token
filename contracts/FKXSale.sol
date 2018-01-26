@@ -31,7 +31,7 @@ contract FKXSale is Ownable {
   }
 
   /**
-  * @dev Finalizes the crowdsale
+  * @dev Finalizes the sale and  token minting
   */
   function finalization() public onlyOwner {
     token.finishMinting();
@@ -51,16 +51,14 @@ contract FKXSale is Ownable {
     token.unpause();
   }
 
-
-  // 
   /**
-  * @dev Allocates tokens to early-bird contributors.
+  * @dev Allocates tokens and bonus tokens to early-bird contributors.
   * @param beneficiary wallet
   * @param baseTokens amount of tokens to be received by beneficiary
   * @param bonusTokens amount of tokens to be locked up to beneficiary
   * @param releaseTime when to unlock bonus tokens
   */
-  function mintTokens(address beneficiary, uint256 baseTokens, uint256 bonusTokens, uint256 releaseTime) public onlyOwner {
+  function mintBaseLockedTokens(address beneficiary, uint256 baseTokens, uint256 bonusTokens, uint256 releaseTime) public onlyOwner {
     require(beneficiary != 0x0);
     require(baseTokens > 0);
     require(bonusTokens > 0);
@@ -74,6 +72,37 @@ contract FKXSale is Ownable {
 
     // Time lock the tokens
     tokenLock.lockTokens(beneficiary, releaseTime, bonusTokens);
+  }
+
+  /**
+  * @dev Allocates bonus tokens to advisors, founders and company.
+  * @param beneficiary wallet
+  * @param tokens amount of tokens to be locked up to beneficiary
+  * @param releaseTime when to unlock bonus tokens
+  */
+  function mintLockedTokens(address beneficiary, uint256 tokens, uint256 releaseTime) public onlyOwner {
+    require(beneficiary != 0x0);
+    require(tokens > 0);
+    require(releaseTime > now);
+
+    // Mint beneficiary's bonus tokens to the token time lock
+    token.mint(tokenLock, tokens);
+
+    // Time lock the tokens
+    tokenLock.lockTokens(beneficiary, releaseTime, tokens);
+  }
+
+  /**
+  * @dev Allocates tokens to beneficiary.
+  * @param beneficiary wallet
+  * @param tokens amount of tokens to be received by beneficiary
+  */
+  function mintTokens(address beneficiary, uint256 tokens) public onlyOwner {
+    require(beneficiary != 0x0);
+    require(tokens > 0);
+    
+    // Mint tokens to beneficiary
+    token.mint(beneficiary, tokens);
   }
 
 
