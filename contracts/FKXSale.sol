@@ -22,9 +22,9 @@ contract FKXSale is Ownable {
 
   FKXTokenTimeLock public tokenLock;
 
-  function FKXSale(FKX _fkxToken) public {
+  function FKXSale() public {
 
-    token =  _fkxToken;
+    token =  new FKX();
 
     tokenLock = new FKXTokenTimeLock(token);
 

@@ -23,12 +23,12 @@ contract('FKXSale', function (accounts) {
     const bonusTokens = new BigNumber(30000000000000000000);
     
     before(async function () {
-        this.token = await FKX.new({from: accounts[1]});
-        this.sale = await FKXSale.new(this.token.address);        
-        await this.token.transferOwnership(this.sale.address, {from: accounts[1]});
+//        this.token = await FKX.new({from: accounts[1]});
+        this.sale = await FKXSale.new();        
+//        await this.token.transferOwnership(this.sale.address, {from: accounts[1]});
         await this.sale.unpauseTokens();
         console.log(this.sale.address);
-        console.log(this.token.address);
+        console.log(this.sale.token());
         console.log(await this.sale.tokenLock());
         this.timelock = await FKXTokenTimeLock.new(await this.sale.tokenLock());
     });

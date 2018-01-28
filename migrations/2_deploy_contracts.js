@@ -1,6 +1,6 @@
 /* global artifacts */
 
-var FKX = artifacts.require("./FKX.sol");
+//var FKX = artifacts.require("./FKX.sol");
 
 var FKXSale = artifacts.require('./FKXSale.sol');
 
@@ -13,8 +13,8 @@ module.exports = function (deployer, network, accounts) {
             console.log("Acount:  " + accounts[i]);
         }
     }
-    
-    deployer.deploy(FKX).then(function() {
-        return deployer.deploy(FKXSale, FKX.address);
-    });
+    deployer.deploy(FKXSale);
+//    deployer.deploy(FKX).then(function() {
+//        return deployer.deploy(FKXSale, FKX.address);
+//    });
 };
