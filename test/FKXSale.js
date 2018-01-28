@@ -27,9 +27,9 @@ contract('FKXSale', function (accounts) {
         this.sale = await FKXSale.new();        
 //        await this.token.transferOwnership(this.sale.address, {from: accounts[1]});
         await this.sale.unpauseTokens();
-        console.log(this.sale.address);
-        console.log(this.sale.token());
-        console.log(await this.sale.tokenLock());
+//        console.log(this.sale.address);
+//        console.log(this.sale.token());
+//        console.log(await this.sale.tokenLock());
         this.timelock = await FKXTokenTimeLock.new(await this.sale.tokenLock());
     });
 
