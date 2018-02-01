@@ -29,6 +29,11 @@ contract FKXTokenTimeLock is Ownable {
        * Timestamp when token release is enabled.
        */
       uint256 releaseTime;
+
+      /**
+       * Lock array index.
+       */
+      uint256 arrayIndex;
   }
 
   // ERC20 basic token contract being held.
@@ -48,6 +53,7 @@ contract FKXTokenTimeLock is Ownable {
     TokenTimeLockVault storage lock = tokenLocks[_beneficiary];
     lock.amount = _tokens;
     lock.releaseTime = _releaseTime;
+    lock.arrayIndex = lockIndexes.length;
     lockIndexes.push(_beneficiary);
 
     LockEvent(_beneficiary, _tokens, _releaseTime);
@@ -65,7 +71,7 @@ contract FKXTokenTimeLock is Ownable {
 
     delete tokenLocks[msg.sender];
 
-    removeLockIndex(msg.sender);
+    delete lockIndexes[lock.arrayIndex];
 
     UnlockEvent(msg.sender);
 
@@ -90,27 +96,13 @@ contract FKXTokenTimeLock is Ownable {
 
       delete tokenLocks[beneficiary];
 
-      removeLockIndex(beneficiary);
-
+      delete lockIndexes[lock.arrayIndex];
+      
       UnlockEvent(beneficiary);
 
       assert(token.transfer(beneficiary, lock.amount));
     }
     return true;
-  }
-
-  /**
-   * Remove beneficiary form lock index
-   *
-   * @param beneficiary beneficiary to removefrom lock index
-   */
-  function removeLockIndex(address beneficiary) private {
-    for (uint j = 0; j < lockIndexes.length; j++) {
-      if (lockIndexes[j] == beneficiary) {
-        delete lockIndexes[j];
-        break;
-      }
-    }
   }
 
   /**
