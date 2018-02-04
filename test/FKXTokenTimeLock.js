@@ -9,7 +9,6 @@ require('chai')
 
 import latestTime from './helpers/latestTime';
 import {increaseTimeTo, duration} from './helpers/increaseTime';
-//import randomInt from './helpers/random';
 
 const FKX = artifacts.require('FKX');
 const FKXTokenTimeLock = artifacts.require('FKXTokenTimeLock');
@@ -22,21 +21,13 @@ contract('FKXTokenTimeLock', function (accounts) {
 
     before(async function () {
         this.token = await FKX.new({from: accounts[1]});
-        await this.token.unpause({from: accounts[1]});
-        //console.log("FKX address: " + this.token.address);
-        
+        await this.token.unpause({from: accounts[1]});        
     });
 
     beforeEach(async function () {
         this.timelock = await FKXTokenTimeLock.new(this.token.address);
-        //console.log("FKXTokenTimeLock address: " + this.timelock.address);
-        
         this.timeLockBalance = await this.token.balanceOf(this.timelock.address);
-//        console.log("FKXTokenTimeLock balance: " + this.timeLockBalance);
-//        console.log("Latest timestamp: " + latestTime());
         this.releaseTime = latestTime() + duration.years(1);
-//        amount =  randomInt(10000);
-//        console.log("Amount: " + amount);
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
         await this.timelock.lockTokens(accounts[2], this.releaseTime, amount);
     });
@@ -44,8 +35,6 @@ contract('FKXTokenTimeLock', function (accounts) {
     afterEach(async function () {
         this.timeLockBalance = await this.token.balanceOf(this.timelock.address);
         const balance = await this.token.balanceOf(accounts[2]);
-//        console.log("TimeLock Balance: " + this.timeLockBalance);
-//        console.log("Beneficiary Balance: " + balance);
     });
 
     it('FKX tokens cannot be released before time limit', async function () {
