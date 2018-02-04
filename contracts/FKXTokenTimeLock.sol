@@ -71,7 +71,7 @@ contract FKXTokenTimeLock is Ownable {
 
     delete tokenLocks[msg.sender];
 
-    delete lockIndexes[lock.arrayIndex];
+    lockIndexes[lock.arrayIndex] = 0;
 
     UnlockEvent(msg.sender);
 
@@ -96,7 +96,7 @@ contract FKXTokenTimeLock is Ownable {
 
       delete tokenLocks[beneficiary];
 
-      delete lockIndexes[lock.arrayIndex];
+      lockIndexes[lock.arrayIndex] = 0;
       
       UnlockEvent(beneficiary);
 
