@@ -14,10 +14,6 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  */
 contract FKXSale is Ownable {
 
-  using SafeMath for uint256;
-
-  uint256 public constant DECIMALS = 18;
-
   FKX public token;
 
   FKXTokenTimeLock public tokenLock;
