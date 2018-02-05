@@ -25,7 +25,8 @@ contract('FKXSale', function (accounts) {
     before(async function () {
         this.sale = await FKXSale.new();        
         await this.sale.unpauseTokens();
-        this.timelock = await FKXTokenTimeLock.new(await this.sale.tokenLock());
+        this.token = FKX.at(await this.sale.token());
+        this.timelock = FKXTokenTimeLock.at(await this.sale.tokenLock());
     });
 
     beforeEach(async function () {
@@ -48,6 +49,18 @@ contract('FKXSale', function (accounts) {
     
     it('Can mint tokens to beneficiary', async function () {        
         await this.sale.mintTokens(accounts[4], baseTokens).should.be.fulfilled;
+    });
+    
+    it('Owner can release all locked tokens', async function () {
+        const balance = await this.token.balanceOf(this.timelock.address);
+        await this.sale.mintBaseLockedTokens(accounts[5], baseTokens, bonusTokens, this.releaseTime).should.be.fulfilled;
+        await this.sale.mintBaseLockedTokens(accounts[6], baseTokens, bonusTokens, this.releaseTime).should.be.fulfilled;
+        await this.sale.mintBaseLockedTokens(accounts[7], baseTokens, bonusTokens, this.releaseTime).should.be.fulfilled;
+        const balance2 = await this.token.balanceOf(this.timelock.address);
+        await this.sale.finalize().should.be.fulfilled;
+        await increaseTimeTo(this.releaseTime + duration.days(121));
+        await this.timelock.releaseAll().should.be.fulfilled;
+        const balance3 = await this.token.balanceOf(this.timelock.address);
     });
 
 });
