@@ -41,8 +41,18 @@ contract('FKXSale', function (accounts) {
         await this.timelock.release({from: accounts[2]}).should.be.rejected;
     });
     
+    it('Can mint base tokens and locked bonus tokens to beneficiary only once', async function () {        
+        await this.sale.mintBaseLockedTokens(accounts[2], baseTokens, bonusTokens, this.releaseTime).should.be.rejected;
+        await this.timelock.release({from: accounts[2]}).should.be.rejected;
+    });
+    
     it('Can mint locked tokens to beneficiary', async function () {       
         await this.sale.mintLockedTokens(accounts[3], bonusTokens, this.releaseTime).should.be.fulfilled;
+        await this.timelock.release({from: accounts[3]}).should.be.rejected;
+    });
+    
+    it('Can mint locked tokens to beneficiary only once', async function () {       
+        await this.sale.mintLockedTokens(accounts[3], bonusTokens, this.releaseTime).should.be.rejected;
         await this.timelock.release({from: accounts[3]}).should.be.rejected;
     });
     

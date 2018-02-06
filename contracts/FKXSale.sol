@@ -89,7 +89,6 @@ contract FKXSale is Ownable {
   function mintTokens(address beneficiary, uint256 tokens) public onlyOwner {
     require(beneficiary != 0x0);
     require(tokens > 0);
-    require(!tokenLock.exists(beneficiary));
     
     // Mint tokens to beneficiary
     token.mint(beneficiary, tokens);
