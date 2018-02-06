@@ -64,6 +64,7 @@ contract FKXSale is Ownable {
     require(baseTokens > 0);
     require(bonusTokens > 0);
     require(releaseTime > now);
+    require(!tokenLock.exists(beneficiary));
     
     // Mint base tokens to beneficiary
     token.mint(beneficiary, baseTokens);
@@ -85,6 +86,7 @@ contract FKXSale is Ownable {
     require(beneficiary != 0x0);
     require(tokens > 0);
     require(releaseTime > now);
+    require(!tokenLock.exists(beneficiary));
 
     // Mint beneficiary's bonus tokens to the token time lock
     token.mint(tokenLock, tokens);
@@ -101,6 +103,7 @@ contract FKXSale is Ownable {
   function mintTokens(address beneficiary, uint256 tokens) public onlyOwner {
     require(beneficiary != 0x0);
     require(tokens > 0);
+    require(!tokenLock.exists(beneficiary));
     
     // Mint tokens to beneficiary
     token.mint(beneficiary, tokens);

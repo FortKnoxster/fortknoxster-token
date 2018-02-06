@@ -59,6 +59,11 @@ contract FKXTokenTimeLock is Ownable {
     LockEvent(_beneficiary, _tokens, _releaseTime);
   }
 
+  function exists(address _beneficiary) external onlyOwner returns (bool) {
+    TokenTimeLockVault memory lock = tokenLocks[_beneficiary];
+    return lock.amount > 0;
+  }
+
   /**
    * @notice Transfers tokens held by timelock to beneficiary.
    */
@@ -81,8 +86,10 @@ contract FKXTokenTimeLock is Ownable {
   /**
    * @notice Transfers tokens held by timelock to all beneficiaries.
    */
-  function releaseAll() external onlyOwner returns (bool) {
-    for (uint i = 0; i < lockIndexes.length; i++) {
+  function releaseAll(uint from, uint to) external onlyOwner returns (bool) {
+    require(from >= 0);
+    require(to <= lockIndexes.length);
+    for (uint i = from; i < to; i++) {
       address beneficiary = lockIndexes[i];
       if (beneficiary == 0) { //Skip any previously removed locks
         continue;
