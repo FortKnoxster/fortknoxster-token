@@ -39,20 +39,6 @@ contract FKXSale is Ownable {
   }
 
   /**
-    * @dev Pause the FKX token.
-    */
-  function pauseTokens() public onlyOwner {
-    token.pause();
-  }
-
-  /**
-   * @dev Unpause the FKX token.
-   */
-  function unpauseTokens() public onlyOwner {
-    token.unpause();
-  }
-
-  /**
   * @dev Allocates tokens and bonus tokens to early-bird contributors.
   * @param beneficiary wallet
   * @param baseTokens amount of tokens to be received by beneficiary

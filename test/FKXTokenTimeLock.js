@@ -20,8 +20,7 @@ contract('FKXTokenTimeLock', function (accounts) {
     const amount = new BigNumber(100000000000000000000);
 
     before(async function () {
-        this.token = await FKX.new({from: accounts[1]});
-        await this.token.unpause({from: accounts[1]});        
+        this.token = await FKX.new({from: accounts[1]});        
     });
 
     beforeEach(async function () {

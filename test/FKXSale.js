@@ -23,8 +23,7 @@ contract('FKXSale', function (accounts) {
     const bonusTokens = new BigNumber(30000000000000000000);
     
     before(async function () {
-        this.sale = await FKXSale.new();        
-        await this.sale.unpauseTokens();
+        this.sale = await FKXSale.new();
         this.token = FKX.at(await this.sale.token());
         this.timelock = FKXTokenTimeLock.at(await this.sale.tokenLock());
     });
