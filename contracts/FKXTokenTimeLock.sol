@@ -59,7 +59,7 @@ contract FKXTokenTimeLock is Ownable {
     LockEvent(_beneficiary, _tokens, _releaseTime);
   }
 
-  function exists(address _beneficiary) external onlyOwner returns (bool) {
+  function exists(address _beneficiary) external onlyOwner view returns (bool) {
     TokenTimeLockVault memory lock = tokenLocks[_beneficiary];
     return lock.amount > 0;
   }
