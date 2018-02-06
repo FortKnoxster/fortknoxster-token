@@ -87,7 +87,7 @@ contract('FKXTokenTimeLock', function (accounts) {
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
         await this.timelock.lockTokens(accounts[4], this.releaseTime, amount);
         await increaseTimeTo(this.releaseTime + duration.years(1));
-        await this.timelock.releaseAll().should.be.fulfilled;
+        await this.timelock.releaseAll(0,3).should.be.fulfilled;
         const balance = await this.token.balanceOf(this.timelock.address);
         balance.should.be.bignumber.equal(0);
     });
@@ -97,8 +97,15 @@ contract('FKXTokenTimeLock', function (accounts) {
         await this.timelock.lockTokens(accounts[3], this.releaseTime, amount);
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
         await this.timelock.lockTokens(accounts[4], this.releaseTime + duration.years(2), amount);
+        await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
+        await this.timelock.lockTokens(accounts[5], this.releaseTime, amount);
+        await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
+        await this.timelock.lockTokens(accounts[6], this.releaseTime, amount);
+        await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
+        await this.timelock.lockTokens(accounts[7], this.releaseTime, amount);
         await increaseTimeTo(this.releaseTime + duration.years(1));
-        await this.timelock.releaseAll().should.be.fulfilled;
+        await this.timelock.releaseAll(0,2).should.be.fulfilled;
+        await this.timelock.releaseAll(2,6).should.be.fulfilled;
         const balance = await this.token.balanceOf(this.timelock.address);
         balance.should.be.bignumber.equal(amount);
     });
