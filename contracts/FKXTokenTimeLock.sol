@@ -85,6 +85,8 @@ contract FKXTokenTimeLock is Ownable {
 
   /**
    * @notice Transfers tokens held by timelock to all beneficiaries.
+   * @param from the start lock index
+   * @param to the end lock index
    */
   function releaseAll(uint from, uint to) external onlyOwner returns (bool) {
     require(from >= 0);

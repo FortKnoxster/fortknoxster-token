@@ -30,12 +30,8 @@ contract FKXSale is Ownable {
   * @dev Finalizes the sale and  token minting
   */
   function finalize() public onlyOwner {
-    //require(token.totalSupply() >= FKX.TOKEN_SUPPLY());
     // Disable minting of FKX
     token.finishMinting();
-
-    // Transfer ownership of FKXTokenTimeLock
-    tokenLock.transferOwnership(owner);
   }
 
   /**
@@ -92,6 +88,17 @@ contract FKXSale is Ownable {
     
     // Mint tokens to beneficiary
     token.mint(beneficiary, tokens);
+  }
+
+  /**
+  * @dev Release locked tokens to all beneficiaries if they are due.
+  * @param from the start lock index
+  * @param to the end lock index
+  */
+  function releaseAll(uint from, uint to) public onlyOwner returns (bool) {
+    tokenLock.releaseAll(from, to);
+
+    return true;
   }
 
 
