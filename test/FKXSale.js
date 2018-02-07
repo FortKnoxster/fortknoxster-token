@@ -68,7 +68,7 @@ contract('FKXSale', function (accounts) {
         const balance2 = await this.token.balanceOf(this.timelock.address);
         await this.sale.finalize().should.be.fulfilled;
         await increaseTimeTo(this.releaseTime + duration.days(121));
-        await this.timelock.releaseAll(0,2).should.be.fulfilled;
+        await this.sale.releaseAll(0,2).should.be.fulfilled;
         const balance3 = await this.token.balanceOf(this.timelock.address);
     });
 
