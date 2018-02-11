@@ -76,7 +76,7 @@ contract FKXTokenTimeLock is Ownable {
 
     delete tokenLocks[msg.sender];
 
-    lockIndexes[lock.arrayIndex] = 0;
+    lockIndexes[lock.arrayIndex] = 0x0;
 
     UnlockEvent(msg.sender);
 
@@ -93,7 +93,7 @@ contract FKXTokenTimeLock is Ownable {
     require(to <= lockIndexes.length);
     for (uint i = from; i < to; i++) {
       address beneficiary = lockIndexes[i];
-      if (beneficiary == 0) { //Skip any previously removed locks
+      if (beneficiary == 0x0) { //Skip any previously removed locks
         continue;
       }
       
@@ -105,7 +105,7 @@ contract FKXTokenTimeLock is Ownable {
 
       delete tokenLocks[beneficiary];
 
-      lockIndexes[lock.arrayIndex] = 0;
+      lockIndexes[lock.arrayIndex] = 0x0;
       
       UnlockEvent(beneficiary);
 
