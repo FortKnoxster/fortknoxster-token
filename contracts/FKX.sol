@@ -16,8 +16,4 @@ contract FKX is CappedToken(FKX.TOKEN_SUPPLY) {
   string public constant version = "1.0";
   uint256 public constant TOKEN_SUPPLY  = 150000000 * (10 ** uint256(decimals)); // 150 Million FKX
 
-  function FKX() public {
-     
-  }
-
 }
