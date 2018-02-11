@@ -6,10 +6,9 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
  * @title FKXSale
- * @dev The FKX crowdsale based
+ * @dev FKXSale smart contracat used to mint and distrubute FKX tokens and lock up FKX tokens in the FKXTokenTimeLock smart contract.
  * Inheritance:
- * TokenCappedCrowdsale - sets a max boundary in FKX token for raised funds (from zeppelin-solidity's CappedCrowdsale.sol)
- * FinalizableCrowdsale - makes the crowdsale finalizable
+ * Ownable - lets FKXSale be ownable
  *
  */
 contract FKXSale is Ownable {
