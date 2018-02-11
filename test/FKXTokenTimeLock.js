@@ -1,4 +1,4 @@
-/* global artifacts, web3 */
+/* global artifacts, web3, assert */
 
 const BigNumber = web3.BigNumber;
 
@@ -69,7 +69,11 @@ contract('FKXTokenTimeLock', function (accounts) {
 
     it('FKX tokens cannot be released twice', async function () {
         await increaseTimeTo(this.releaseTime + duration.years(1));
-        await this.timelock.release({from: accounts[2]}).should.be.fulfilled;
+        await this.timelock.release({from: accounts[2]}).should.be.fulfilled
+            .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[2]);
+                });
         await this.timelock.release({from: accounts[2]}).should.be.rejected;
         const balance = await this.token.balanceOf(this.timelock.address);
         balance.should.be.bignumber.equal(0);
@@ -81,10 +85,23 @@ contract('FKXTokenTimeLock', function (accounts) {
     });
     
     it('FKX tokens can be released to all beneficiaries by owner', async function () {
+        var rt = this.releaseTime;
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[3], this.releaseTime, amount);
+        await this.timelock.lockTokens(accounts[3], this.releaseTime, amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[3]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt);
+                });
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[4], this.releaseTime, amount);
+        await this.timelock.lockTokens(accounts[4], this.releaseTime, amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[4]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt);
+                });
         await increaseTimeTo(this.releaseTime + duration.years(1));
         await this.timelock.releaseAll(0,3).should.be.fulfilled;
         const balance = await this.token.balanceOf(this.timelock.address);
@@ -92,16 +109,47 @@ contract('FKXTokenTimeLock', function (accounts) {
     });
     
     it('FKX tokens can be released to multiple beneficiaries by owner', async function () {
+        var rt = this.releaseTime;
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[3], this.releaseTime, amount);
+        await this.timelock.lockTokens(accounts[3], this.releaseTime, amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[3]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt);
+                });
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[4], this.releaseTime + duration.years(2), amount);
+        await this.timelock.lockTokens(accounts[4], this.releaseTime + duration.years(2), amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[4]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt + duration.years(2));
+                });
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[5], this.releaseTime, amount);
+        await this.timelock.lockTokens(accounts[5], this.releaseTime, amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[5]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt);
+                });
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[6], this.releaseTime, amount);
+        await this.timelock.lockTokens(accounts[6], this.releaseTime, amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[6]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt);
+                });
         await this.token.mint(this.timelock.address, amount, {from: accounts[1]});
-        await this.timelock.lockTokens(accounts[7], this.releaseTime, amount);
+        await this.timelock.lockTokens(accounts[7], this.releaseTime, amount)
+                .then(function(events) {
+                    assert.equal(events.logs.length, 1);
+                    assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[7]);
+                    assert.equal(events.logs[0].args.amount.valueOf(), amount);
+                    assert.equal(events.logs[0].args.releaseTime.valueOf(), rt);
+                });
         await increaseTimeTo(this.releaseTime + duration.years(1));
         await this.timelock.releaseAll(0,2).should.be.fulfilled;
         await this.timelock.releaseAll(2,6).should.be.fulfilled;
