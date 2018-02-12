@@ -7,7 +7,7 @@ import "zeppelin-solidity/contracts/ownership/Ownable.sol";
  * @title FKXTokenTimeLock
  * @dev FKXTokenTimeLock is a token holder contract that will allow multiple
  * beneficiaries to extract the tokens after a given release time. It is a modification of the  
- * OpenZeppenlin TokenTimeLock to allow for one lock to many beneficiaries. 
+ * OpenZeppenlin TokenTimeLock to allow for one token lock smart contract for many beneficiaries. 
  */
 contract FKXTokenTimeLock is Ownable {
 
