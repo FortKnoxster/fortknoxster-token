@@ -1,5 +1,8 @@
+require('babel-register');
+require('babel-polyfill');
 
 module.exports = {
-  copyNodeModules: true,
-  norpc: true
+    port: 8545,
+    copyNodeModules: true,
+    norpc: true
 };
