@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "scripts/test.sh",
-    "coverage": "./node_modules/.bin/solidity-coverage",
-    "truffle-flattener": "./node_modules/truffle-flattener"
+    "console": "truffle console",
+    "coverage": "scripts/coverage.sh"
   },
   "author": "FortKnoxster",
   "homepage": "https://github.com/FortKnoxster/fortknoxster-token",
@@ -24,11 +24,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FortKnoxster/fortknoxster-token"
-  },
-  "scripts": {
-    "test": "scripts/test.sh",
-    "console": "truffle console",
-    "coverage": "scripts/coverage.sh"
   },
   "dependencies": {
     "bitcore-mnemonic": "^1.5.0",
@@ -59,8 +54,8 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "solidity-coverage": "^0.2.7",
     "ethereumjs-testrpc": "^6.0.3",
+    "solidity-coverage": "^0.2.7",
     "truffle": "^4.0.5"
   }
 }

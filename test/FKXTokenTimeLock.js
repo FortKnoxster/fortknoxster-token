@@ -1,10 +1,11 @@
+'use strict';
 /* global artifacts, web3, assert */
 
 const BigNumber = web3.BigNumber;
 
 require('chai')
         .use(require('chai-as-promised'))
-        .use(require('chai-bignumber')(BigNumber))
+        .use(require('chai-bignumber')(web3.BigNumber))
         .should();
 
 import latestTime from './helpers/latestTime';
@@ -33,38 +34,38 @@ contract('FKXTokenTimeLock', function (accounts) {
     
     afterEach(async function () {
         this.timeLockBalance = await this.token.balanceOf(this.timelock.address);
-        const balance = await this.token.balanceOf(accounts[2]);
+        let balance = await this.token.balanceOf(accounts[2]);
     });
 
     it('FKX tokens cannot be released before time limit', async function () {
         await this.timelock.release({from: accounts[2]}).should.be.rejected;
-        const balance = await this.token.balanceOf(this.timelock.address);
+        let balance = await this.token.balanceOf(this.timelock.address);
         balance.should.be.bignumber.equal(amount);
-        const beneficiaryBalance = await this.token.balanceOf(accounts[2]);
-        beneficiaryBalance.should.be.bignumber.equal(0);
+        let beneficiaryBalance = await this.token.balanceOf(accounts[2]);
+        beneficiaryBalance.should.be.bignumber.equal(new BigNumber(0));
     });
 
     it('FKX tokens cannot be released just before time limit', async function () {
         await increaseTimeTo(this.releaseTime - duration.seconds(3));
         await this.timelock.release({from: accounts[2]}).should.be.rejected;
-        const balance = await this.token.balanceOf(this.timelock.address);
-        balance.should.be.bignumber.equal(amount);
+        let balance = await this.token.balanceOf(this.timelock.address);
+        balance.should.be.bignumber.equal(new BigNumber(amount));
     });
 
     it('FKX tokens can be released just after limit', async function () {
         await increaseTimeTo(this.releaseTime + duration.seconds(1));
         await this.timelock.release({from: accounts[2]}).should.be.fulfilled;
-        const balance = await this.token.balanceOf(this.timelock.address);
+        let balance = await this.token.balanceOf(this.timelock.address);
         balance.should.be.bignumber.equal(0);
-        const beneficiaryBalance = await this.token.balanceOf(accounts[2]);
-        beneficiaryBalance.should.be.bignumber.equal(amount);
+        let beneficiaryBalance = await this.token.balanceOf(accounts[2]);
+        beneficiaryBalance.should.be.bignumber.equal(new BigNumber(amount));
     });
 
     it('FKX tokens can be released after time limit', async function () {
         await increaseTimeTo(this.releaseTime + duration.years(1));
         await this.timelock.release({from: accounts[2]}).should.be.fulfilled;
-        const balance = await this.token.balanceOf(this.timelock.address);
-        balance.should.be.bignumber.equal(0);
+        let balance = await this.token.balanceOf(this.timelock.address);
+        balance.should.be.bignumber.equal(new BigNumber(0));
     });
 
     it('FKX tokens cannot be released twice', async function () {
@@ -75,8 +76,8 @@ contract('FKXTokenTimeLock', function (accounts) {
                     assert.equal(events.logs[0].args.beneficiary.valueOf(), accounts[2]);
                 });
         await this.timelock.release({from: accounts[2]}).should.be.rejected;
-        const balance = await this.token.balanceOf(this.timelock.address);
-        balance.should.be.bignumber.equal(0);
+        let balance = await this.token.balanceOf(this.timelock.address);
+        balance.should.be.bignumber.equal(new BigNumber(0));
     });
     
     it('FKX tokens cannot be released to other than beneficiary', async function () {
@@ -104,8 +105,8 @@ contract('FKXTokenTimeLock', function (accounts) {
                 });
         await increaseTimeTo(this.releaseTime + duration.years(1));
         await this.timelock.releaseAll(0,3).should.be.fulfilled;
-        const balance = await this.token.balanceOf(this.timelock.address);
-        balance.should.be.bignumber.equal(0);
+        let balance = await this.token.balanceOf(this.timelock.address);
+        balance.should.be.bignumber.equal(new BigNumber(0));
     });
     
     it('FKX tokens can be released to multiple beneficiaries by owner', async function () {
@@ -153,8 +154,8 @@ contract('FKXTokenTimeLock', function (accounts) {
         await increaseTimeTo(this.releaseTime + duration.years(1));
         await this.timelock.releaseAll(0,2).should.be.fulfilled;
         await this.timelock.releaseAll(2,6).should.be.fulfilled;
-        const balance = await this.token.balanceOf(this.timelock.address);
-        balance.should.be.bignumber.equal(amount);
+        let balance = await this.token.balanceOf(this.timelock.address);
+        balance.should.be.bignumber.equal(new BigNumber(amount));
     });
 
 });
