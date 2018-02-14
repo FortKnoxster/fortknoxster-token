@@ -74,7 +74,7 @@ contract('FKXSale', function (accounts) {
         await this.sale.releaseAll(0,2).should.be.fulfilled; // release 2, 3 locks left (90 FKX)
         const balance3 = await this.token.balanceOf(this.timelock.address);
         balance3.should.be.bignumber.equal(bonusTokens.mul(3));
-        await this.sale.releaseAll(2,5).should.be.fulfilled; // release 3, 0 locks left (0 FKX)
+        await this.sale.releaseAll(0,5).should.be.fulfilled; // release 3, 0 locks left (0 FKX)
         const balance4 = await this.token.balanceOf(this.timelock.address);
         balance4.should.be.bignumber.equal(0);
     });
