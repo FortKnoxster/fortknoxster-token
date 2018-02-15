@@ -36,6 +36,7 @@
     "truffle-contract": "^3.0.1",
     "truffle-flattener": "^1.2.0",
     "truffle-hdwallet-provider": "0.0.3",
+    "truffle-privatekey-provider": "0.0.5",
     "zeppelin-solidity": "^1.4.0"
   },
   "devDependencies": {
